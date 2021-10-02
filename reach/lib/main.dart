@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 
 /// this is the entry point of the application
 void main() {
@@ -60,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+      // _counter = _counter + 1;
     });
   }
 
@@ -75,7 +76,12 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: TextStyle(
+            fontFamily: GoogleFonts.rubik().fontFamily,
+          ),
+        ),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
