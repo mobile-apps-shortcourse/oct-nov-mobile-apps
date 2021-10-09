@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reach/config/themes.dart';
 import 'package:reach/presentation/pages/splash.dart';
 
 class ReachApp extends StatelessWidget {
@@ -6,8 +7,13 @@ class ReachApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
-      home: SplashPage(),
+      debugShowCheckedModeBanner: false,
+      theme: kLightTheme(context),
+      darkTheme: kDarkTheme(context),
+      themeMode: ThemeMode.system,
+      home: const SplashPage(),
     );
   }
 }
