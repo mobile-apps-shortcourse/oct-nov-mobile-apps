@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reach/config/constants.dart';
 import 'package:reach/config/themes.dart';
+import 'package:reach/presentation/pages/onboarding.dart';
 import 'package:reach/presentation/widgets/buttons.dart';
 
 /// splash page -> this is the first page any user sees when the application
@@ -92,7 +93,13 @@ class _SplashPageState extends State<SplashPage> {
                 label: 'Explore',
                 icon: Icons.arrow_right_alt,
                 onTap: () {
-                  /// todo -> navigate to the login / home page
+                  // navigate to the onboarding page
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const OnboardingPage()),
+                    (_) => false,
+                  );
                 },
               ),
             ),

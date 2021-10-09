@@ -100,7 +100,7 @@ TextTheme _kDefaultTextTheme(BuildContext context) {
 // theme modes
 ThemeData kLightTheme(BuildContext context) => ThemeData.light().copyWith(
       scaffoldBackgroundColor: _kPink50,
-      colorScheme: ColorScheme.light().copyWith(
+      colorScheme: const ColorScheme.light().copyWith(
         primary: _kPink100,
         primaryVariant: _kPink100,
         onPrimary: _kPink900,
@@ -119,7 +119,7 @@ ThemeData kLightTheme(BuildContext context) => ThemeData.light().copyWith(
 
 ThemeData kDarkTheme(BuildContext context) => ThemeData.dark().copyWith(
       textTheme: _kDefaultTextTheme(context),
-      colorScheme: ColorScheme.dark().copyWith(
+      colorScheme: const ColorScheme.dark().copyWith(
           // primary: ,
           // primaryVariant: ,
           // onPrimary: ,
@@ -137,8 +137,13 @@ ThemeData kDarkTheme(BuildContext context) => ThemeData.dark().copyWith(
 
 // update system chrome
 void kApplySystemOverlay(
-  BuildContext context,
-) {
+  BuildContext context, {
+  Color? statusBarColor,
+  Color? systemNavigationBarColor,
+  Color? systemNavigationBarDividerColor,
+  Brightness statusBarIconBrightness = Brightness.dark,
+  Brightness systemNavigationBarIconBrightness = Brightness.dark,
+}) {
   // get the current theme of the application
   var currentTheme = Theme.of(context);
   var colorScheme = currentTheme.colorScheme;
@@ -146,11 +151,13 @@ void kApplySystemOverlay(
   // apply the theme overlay
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      statusBarColor: colorScheme.background,
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: colorScheme.background,
-      systemNavigationBarDividerColor: colorScheme.background,
-      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarColor: statusBarColor ?? colorScheme.background,
+      statusBarIconBrightness: statusBarIconBrightness,
+      systemNavigationBarColor:
+          systemNavigationBarColor ?? colorScheme.background,
+      systemNavigationBarDividerColor:
+          systemNavigationBarDividerColor ?? colorScheme.background,
+      systemNavigationBarIconBrightness: systemNavigationBarIconBrightness,
     ),
   );
 }
