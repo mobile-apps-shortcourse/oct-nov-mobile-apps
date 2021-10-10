@@ -30,7 +30,10 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^2.1.0
-
+  cached_network_image:
+  font_awesome_flutter:
+  google_sign_in:
+  twitter_login:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2

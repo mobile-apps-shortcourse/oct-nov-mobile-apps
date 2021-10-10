@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:reach/config/themes.dart';
+import 'package:reach/presentation/pages/auth.dart';
 import 'package:reach/presentation/widgets/buttons.dart';
 import 'package:reach/presentation/widgets/custom.shapes.dart';
 
@@ -17,10 +19,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    /// dimensions of the current display
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-
     /// text theme of the application
     var textTheme = Theme.of(context).textTheme;
 
@@ -32,7 +30,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
     kApplySystemOverlay(
       context,
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
+      statusBarIconBrightness:
+          _currentPageIndex == 1 ? Brightness.dark : Brightness.light,
     );
 
     return Scaffold(
@@ -92,13 +91,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   label: 'Get started',
                   icon: Icons.arrow_right_alt,
                   onTap: () {
-                    /// todo -> navigate to the login page
-                    /*Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const OnboardingPage()),
-                        (_) => false,
-                  );*/
+                    /// navigate to the login page
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AuthenticationPage()),
+                      (_) => false,
+                    );
                   },
                 ),
               ),
@@ -110,7 +109,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
               left: 16,
               child: TextButton(
                 onPressed: () {
-                  /// todo -> skip to the login page
+                  /// skip to the login page
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AuthenticationPage()),
+                    (_) => false,
+                  );
                 },
                 child: Text(
                   'Skip',
@@ -157,7 +162,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
 }
 
 /// onboarding page
-
 class OnboardingItem {
   final String imageUrl;
   final String title;
@@ -225,8 +229,8 @@ class OnboardingItemPage extends StatelessWidget {
               decoration: BoxDecoration(
                 color: colorScheme.primary,
               ),
-              child: Image.network(
-                item.imageUrl,
+              child: CachedNetworkImage(
+                imageUrl: item.imageUrl,
                 fit: BoxFit.cover,
               ),
             ),

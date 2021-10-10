@@ -5,12 +5,18 @@ class PrimaryButton extends StatelessWidget {
   final String label;
   final IconData icon;
   final Function()? onTap;
+  final Color? background;
+  final Color? foreground;
+  final bool outlined;
 
   const PrimaryButton({
     Key? key,
     required this.label,
     required this.icon,
     this.onTap,
+    this.background,
+    this.foreground,
+    this.outlined = false,
   }) : super(key: key);
 
   @override
@@ -25,20 +31,27 @@ class PrimaryButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: colorScheme.primaryVariant,
-          borderRadius: BorderRadius.circular(16),
+          color: outlined
+              ? Colors.transparent
+              : background ?? colorScheme.primary,
+          borderRadius: BorderRadius.circular(28),
+          border: outlined
+              ? Border.all(color: background ?? colorScheme.primaryVariant, width: 2)
+              : null,
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
         child: Row(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              label.toUpperCase(),
-              style: textTheme.button,
+              label,
+              style: textTheme.button
+                  ?.copyWith(color: foreground ?? colorScheme.onPrimary),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8),
-              child: Icon(icon, color: colorScheme.onPrimary),
+              child: Icon(icon, color: foreground ?? colorScheme.onPrimary),
             ),
           ],
         ),
