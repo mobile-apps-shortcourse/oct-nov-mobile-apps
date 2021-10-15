@@ -10,10 +10,12 @@ final _container = ProviderContainer();
 final _googleLoginProvider = Provider((_) => GoogleSignIn());
 
 /// provides a singleton of [TwitterLogin]
-final _twitterLoginProvider = Provider((_) => TwitterLogin(
-    apiKey: 'apiKey',
-    apiSecretKey: 'apiSecretKey',
-    redirectURI: 'redirectURI'));
+final _twitterLoginProvider = Provider(
+  (_) => TwitterLogin(
+      apiKey: 'apiKey',
+      apiSecretKey: 'apiSecretKey',
+      redirectURI: 'redirectURI'),
+);
 
 /// [BaseAuthRepository] instance
 BaseAuthRepository authRepository = AuthRepository(
