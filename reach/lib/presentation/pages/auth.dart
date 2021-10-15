@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:reach/config/dependency.injection.dart';
 import 'package:reach/config/themes.dart';
 import 'package:reach/presentation/blocs/auth_cubit.dart';
+import 'package:reach/presentation/pages/home.dart';
 import 'package:reach/presentation/widgets/buttons.dart';
 
 /// authentication page.
@@ -46,6 +48,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       listener: (context, state) {
         if (mounted) setState(() => _loading = state is AuthLoading);
 
+        /// show error message if process fails
         if (state is AuthError && mounted) {
           ScaffoldMessenger.of(context)
             ..removeCurrentSnackBar()
@@ -54,11 +57,20 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 // behavior: SnackBarBehavior.floating,
                 content: Text(
                   state.reason,
-                  style: textTheme.button?.copyWith(color: colorScheme.background),
+                  style:
+                      textTheme.button?.copyWith(color: colorScheme.background),
                 ),
                 backgroundColor: colorScheme.primaryVariant,
               ),
             );
+        }
+
+        /// navigate to home page when logged in
+        if (state is AuthSuccess) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (_) => const HomePage()),
+              (route) => false);
         }
       },
       child: Scaffold(
@@ -79,8 +91,14 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        SizedBox(
+                          width: width,
+                          height: height * 0.4,
+                          child: LottieBuilder.asset(
+                              'assets/users_profile_cards.json'),
+                        ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
+                          padding: const EdgeInsets.only(bottom: 16, top: 24),
                           child: Text(
                             'Make your brand known',
                             style: textTheme.headline5?.copyWith(
