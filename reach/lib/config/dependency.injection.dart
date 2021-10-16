@@ -14,7 +14,7 @@ final _twitterLoginProvider = Provider(
   (_) => TwitterLogin(
     apiKey: 'hUSdkddl6GDhaEjVzNbOqq7IX',
     apiSecretKey: 'dUI4kveC7UUXbTuREn8x8QRwgy7vm9odSBcebvLZmdRS2ZpaCO',
-    redirectURI: 'https://reach-consolidated-app.firebaseapp.com/__/auth/handler',
+    redirectURI: 'https://twitter-firebase-auth',
   ),
 );
 

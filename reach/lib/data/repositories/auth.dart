@@ -73,7 +73,7 @@ class AuthRepository extends BaseAuthRepository {
       var authResult = await twitterLoginProvider.login();
       if (authResult.status == TwitterLoginStatus.loggedIn) {
         var user = authResult.user;
-        logger.i('twitter user -> $user');
+        logger.i('twitter user -> ${user?.id}');
         _authController.add(AuthStatus.authenticated);
       } else {
         logger.e(authResult.errorMessage);

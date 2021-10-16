@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "605325277998",
+    "project_id": "reach-consolidated-app",
+    "storage_bucket": "reach-consolidated-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605325277998:android:909c6b8622d3a795a018bf",
+        "android_client_info": {
+          "package_name": "com.reach.reach"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "605325277998-f94taedhep652621snkrjdsh06c04io8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.reach.reach",
+            "certificate_hash": "619f37f40815846bc355401d60601cee385c6d33"
+          }
+        },
+        {
+          "client_id": "605325277998-mrq67ilmvj9fs3v8bkc98m08n8b6uf78.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.reach.reach",
+            "certificate_hash": "abb0b003560c0b221f7c0df9812be5cd4fbdfb23"
+          }
+        },
+        {
+          "client_id": "605325277998-s9ilm5l9vjqa9i63e6cr9lo8fmbg2l2e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAREsj3DNus-2zBjSoH9Wka_xrFxEaDzvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "605325277998-s9ilm5l9vjqa9i63e6cr9lo8fmbg2l2e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "605325277998-4o3m1k6949msv5293n8ss5238ijt4sdt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.reach.reach"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
