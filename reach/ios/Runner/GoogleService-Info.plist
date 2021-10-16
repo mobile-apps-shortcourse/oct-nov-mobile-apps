@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>605325277998-4o3m1k6949msv5293n8ss5238ijt4sdt.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.605325277998-4o3m1k6949msv5293n8ss5238ijt4sdt</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>605325277998-f94taedhep652621snkrjdsh06c04io8.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCHe2w3mGrDQUzUXYMaBGtafVW132Lxs4k</string>
+	<key>GCM_SENDER_ID</key>
+	<string>605325277998</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.reach.reach</string>
+	<key>PROJECT_ID</key>
+	<string>reach-consolidated-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>reach-consolidated-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:605325277998:ios:8f57c9dee60a7c98a018bf</string>
+</dict>
+</plist>
