@@ -12,9 +12,10 @@ final _googleLoginProvider = Provider((_) => GoogleSignIn());
 /// provides a singleton of [TwitterLogin]
 final _twitterLoginProvider = Provider(
   (_) => TwitterLogin(
-      apiKey: 'apiKey',
-      apiSecretKey: 'apiSecretKey',
-      redirectURI: 'redirectURI'),
+    apiKey: 'hUSdkddl6GDhaEjVzNbOqq7IX',
+    apiSecretKey: 'dUI4kveC7UUXbTuREn8x8QRwgy7vm9odSBcebvLZmdRS2ZpaCO',
+    redirectURI: 'https://reach-consolidated-app.firebaseapp.com/__/auth/handler',
+  ),
 );
 
 /// [BaseAuthRepository] instance
