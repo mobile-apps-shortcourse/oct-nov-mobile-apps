@@ -3,6 +3,8 @@ import 'package:reach/config/themes.dart';
 import 'package:reach/presentation/widgets/buttons.dart';
 import 'package:reach/presentation/widgets/custom.shapes.dart';
 
+import 'auth.dart';
+
 /// onboarding process for new users
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({Key? key}) : super(key: key);
@@ -92,7 +94,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   label: 'Get started',
                   icon: Icons.arrow_right_alt,
                   onTap: () {
-                    /// todo -> navigate to the login page
+                    /// navigate to the login page
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AuthPage()),
+                      (route) => false,
+                    );
+
                     /*Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
@@ -110,7 +118,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
               left: 16,
               child: TextButton(
                 onPressed: () {
-                  /// todo -> skip to the login page
+                  /// skip to the login page
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AuthPage()),
+                        (route) => false,
+                  );
                 },
                 child: Text(
                   'Skip',

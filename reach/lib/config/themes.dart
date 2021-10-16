@@ -43,7 +43,7 @@ TextTheme _kDefaultTextTheme(BuildContext context) {
     ),
     headline5: GoogleFonts.rubik(
       fontSize: 24,
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w600,
       color: textColor,
     ),
     headline6: GoogleFonts.rubik(
@@ -102,7 +102,7 @@ ThemeData kLightTheme(BuildContext context) => ThemeData.light().copyWith(
       scaffoldBackgroundColor: _kPink50,
       colorScheme: const ColorScheme.light().copyWith(
         primary: _kPink100,
-        primaryVariant: _kPink100,
+        primaryVariant: _kPink900,
         onPrimary: _kPink900,
         secondary: _kPink100,
         secondaryVariant: _kPink100,
