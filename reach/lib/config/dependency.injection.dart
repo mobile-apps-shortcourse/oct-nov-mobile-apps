@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:reach/data/repositories/auth.dart';
 import 'package:riverpod/riverpod.dart';
@@ -18,8 +19,12 @@ final _twitterLoginProvider = Provider(
   ),
 );
 
+/// provides a singleton of [FirebaseAuth]
+final _authProvider = Provider((_) => FirebaseAuth.instance);
+
 /// [BaseAuthRepository] instance
 BaseAuthRepository authRepository = AuthRepository(
   googleLoginProvider: _container.read(_googleLoginProvider),
   twitterLoginProvider: _container.read(_twitterLoginProvider),
+  auth: _container.read(_authProvider),
 );

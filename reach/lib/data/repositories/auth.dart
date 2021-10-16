@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:reach/config/constants.dart';
 import 'package:twitter_login/twitter_login.dart';
@@ -25,10 +26,12 @@ abstract class BaseAuthRepository {
 class AuthRepository extends BaseAuthRepository {
   final GoogleSignIn googleLoginProvider;
   final TwitterLogin twitterLoginProvider;
+  final FirebaseAuth auth;
 
   AuthRepository({
     required this.googleLoginProvider,
     required this.twitterLoginProvider,
+    required this.auth,
   });
 
   /// handles stream events of authentication state
@@ -49,7 +52,11 @@ class AuthRepository extends BaseAuthRepository {
         var authentication = await account.authentication;
         var idToken = authentication.idToken;
         var accessToken = authentication.accessToken;
-        logger.i('access token => $accessToken & id token -> $idToken');
+        var credential = await auth.signInWithCredential(
+            GoogleAuthProvider.credential(
+                accessToken: accessToken, idToken: idToken));
+        var profile = credential.additionalUserInfo?.profile;
+        logger.i('user profile -> $profile');
         _authController.add(AuthStatus.authenticated);
       }
     } catch (e) {
@@ -74,6 +81,13 @@ class AuthRepository extends BaseAuthRepository {
       if (authResult.status == TwitterLoginStatus.loggedIn) {
         var user = authResult.user;
         logger.i('twitter user -> ${user?.id}');
+        var credential = await auth.signInWithCredential(
+          TwitterAuthProvider.credential(
+              accessToken: authResult.authToken!,
+              secret: authResult.authTokenSecret!),
+        );
+        var profile = credential.additionalUserInfo?.profile;
+        logger.i('user profile -> $profile');
         _authController.add(AuthStatus.authenticated);
       } else {
         logger.e(authResult.errorMessage);
