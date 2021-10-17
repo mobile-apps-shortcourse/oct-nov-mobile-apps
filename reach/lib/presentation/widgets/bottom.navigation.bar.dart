@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttericon/entypo_icons.dart';
+import 'package:reach/config/constants.dart';
+import 'package:reach/presentation/blocs/auth_cubit.dart';
+import 'package:sliding_sheet/sliding_sheet.dart';
 
 /// bottom navigation item
 class ReachBottomNavigationBarItem {
@@ -50,38 +54,42 @@ class ReachBottomNavigationBar extends StatelessWidget {
     /// color scheme of the application
     var colorScheme = Theme.of(context).colorScheme;
 
-    return Container(
-      height: kBottomNavigationBarHeight,
-      width: width,
-      color: colorScheme.secondary,
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildItem(context, items[0]),
-          _buildItem(context, items[1]),
-          GestureDetector(
-            onTap: () => Navigator.push(
-              context,
-              /// show sliding sheet
-              MaterialPageRoute(builder: (context) => const Scaffold()),
-            ),
-            child: Container(
-              width: 40,
-              height: 40,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: colorScheme.onSecondary,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(Entypo.plus, color: colorScheme.secondary),
-            ),
+    return BlocConsumer<AuthCubit, AuthState>(
+      bloc: context.read<AuthCubit>(),
+      listener: (_, __) {},
+      builder: (context, state) {
+        return Container(
+          height: kBottomNavigationBarHeight,
+          width: width,
+          color: colorScheme.secondary,
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildItem(context, items[0]),
+              _buildItem(context, items[1]),
+              if (!context.read<AuthCubit>().isAudience) ...{
+                GestureDetector(
+                  onTap: () => _showPostItemSheet(context),
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: colorScheme.onSecondary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(Entypo.plus, color: colorScheme.secondary),
+                  ),
+                ),
+              },
+              _buildItem(context, items[2]),
+              _buildItem(context, items[3]),
+            ],
           ),
-          _buildItem(context, items[2]),
-          _buildItem(context, items[3]),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -128,5 +136,59 @@ class ReachBottomNavigationBar extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _showPostItemSheet(BuildContext context) async {
+    /// dimensions of the current display
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
+    /// app theme
+    var appTheme = Theme.of(context);
+
+    /// text theme of the application
+    var textTheme = appTheme.textTheme;
+
+    /// color scheme of the application
+    var colorScheme = appTheme.colorScheme;
+
+    final result = await showSlidingBottomSheet(context,
+        resizeToAvoidBottomInset: true, builder: (context) {
+      return SlidingSheetDialog(
+        elevation: 8,
+        cornerRadius: 16,
+        backdropColor: colorScheme.onBackground.withOpacity(0.2),
+        snapSpec: const SnapSpec(
+          snap: true,
+          snappings: [0.4, 0.7, 1.0],
+          positioning: SnapPositioning.relativeToAvailableSpace,
+        ),
+        builder: (context, state) {
+          return Container(
+            color: colorScheme.secondary,
+            height: height * 0.6,
+            child: Center(
+              child: Material(
+                color: colorScheme.secondary,
+                child: InkWell(
+                  onTap: () => Navigator.pop(context, 'This is the result.'),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+
+                    /// todo -> layout for posting item
+                    child: Text(
+                      kFeatureUnderDev,
+                      style: textTheme.bodyText1,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    });
+
+    print(result); // This is the result.
   }
 }
