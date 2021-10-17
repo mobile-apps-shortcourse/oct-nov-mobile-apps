@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reach/config/constants.dart';
+import 'package:reach/config/extensions.dart';
 import 'package:reach/config/themes.dart';
+import 'package:reach/presentation/blocs/auth_cubit.dart';
+import 'package:reach/presentation/pages/home.dart';
 import 'package:reach/presentation/pages/onboarding.dart';
 import 'package:reach/presentation/widgets/buttons.dart';
 
@@ -14,93 +18,118 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  bool _loggedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    doAfterDelay(() => context.read<AuthCubit>().getCurrentUser());
+  }
+
   @override
   Widget build(BuildContext context) {
+    var appTheme = Theme.of(context);
+
     /// set system UI overlays when the application is rendered
     /// to the user's display.
-    kApplySystemOverlay(context);
+    bool isLightTheme = appTheme.brightness == Brightness.light;
+    kApplySystemOverlay(
+      context,
+      statusBarIconBrightness:
+          isLightTheme ? Brightness.dark : Brightness.light,
+      systemNavigationBarIconBrightness:
+          isLightTheme ? Brightness.dark : Brightness.light,
+    );
 
     /// text theme of the application
-    var textTheme = Theme.of(context).textTheme;
+    var textTheme = appTheme.textTheme;
 
     /// color scheme of the application
-    var colorScheme = Theme.of(context).colorScheme;
+    var colorScheme = appTheme.colorScheme;
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              /// row
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    applicationName,
-                    style: textTheme.headline3,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: colorScheme.onPrimary,
-                      borderRadius: BorderRadius.circular(8),
+    /// dimensions of the current display
+    var width = MediaQuery.of(context).size.width;
+
+    return BlocListener<AuthCubit, AuthState>(
+      bloc: context.read<AuthCubit>(),
+      listener: (context, state) {
+        logger.e(state.runtimeType);
+        if (mounted) setState(() => _loggedIn = state is AuthSuccess);
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                /// row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      applicationName,
+                      style: textTheme.headline3,
                     ),
-                    margin: const EdgeInsets.only(left: 8),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    child: Text(
-                      'Pro',
-                      style: textTheme.button?.copyWith(
-                        color: colorScheme.background,
+                    Container(
+                      decoration: BoxDecoration(
+                        color: colorScheme.onSecondary,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      margin: const EdgeInsets.only(left: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 6),
+                      child: Text(
+                        'Pro',
+                        style: textTheme.button
+                            ?.copyWith(color: colorScheme.secondaryVariant),
                       ),
                     ),
+                  ],
+                ),
+
+                /// text
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 40,
+                    left: width * 0.1,
+                    right: width * 0.1,
                   ),
-                ],
-              ),
-
-              /// for adding space
-              // SizedBox(height: 40,),
-
-              /// text
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 40,
-                  left: 32,
-                  right: 32,
+                  child: Text(
+                    applicationSlogan,
+                    style: textTheme.subtitle1,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                child: Text(
-                  applicationSlogan,
-                  style: textTheme.subtitle1,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
+              ],
+            ),
 
-          /// button
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 24,
-            child: Center(
-              child: PrimaryButton(
-                label: 'Explore',
-                icon: Icons.arrow_right_alt,
-                onTap: () {
-                  // navigate to the onboarding page
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const OnboardingPage()),
-                    (_) => false,
-                  );
-                },
+            /// button
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 24,
+              child: Center(
+                child: PrimaryButton(
+                  label: 'Explore',
+                  icon: Icons.arrow_right_alt,
+                  onTap: () {
+                    // navigate to the onboarding page
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => _loggedIn
+                              ? const HomePage()
+                              : const OnboardingPage()),
+                      (_) => false,
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

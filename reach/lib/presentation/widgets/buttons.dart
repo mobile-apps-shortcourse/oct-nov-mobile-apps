@@ -33,7 +33,7 @@ class PrimaryButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: outlined
               ? Colors.transparent
-              : background ?? colorScheme.primary,
+              : background ?? colorScheme.secondary,
           borderRadius: BorderRadius.circular(28),
           border: outlined
               ? Border.all(color: background ?? colorScheme.primaryVariant, width: 2)
@@ -47,11 +47,11 @@ class PrimaryButton extends StatelessWidget {
             Text(
               label,
               style: textTheme.button
-                  ?.copyWith(color: foreground ?? colorScheme.onPrimary),
+                  ?.copyWith(color: foreground ?? colorScheme.onSecondary),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8),
-              child: Icon(icon, color: foreground ?? colorScheme.onPrimary),
+              child: Icon(icon, color: foreground ?? colorScheme.onSecondary),
             ),
           ],
         ),

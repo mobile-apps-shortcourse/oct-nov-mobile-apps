@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:reach/config/constants.dart';
 import 'package:reach/config/themes.dart';
 import 'package:reach/presentation/pages/auth.dart';
 import 'package:reach/presentation/widgets/buttons.dart';
@@ -47,8 +48,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 /// 1. influencer
                 OnboardingItemPage(
                   item: OnboardingItem(
-                    imageUrl:
-                        'https://images.unsplash.com/photo-1556766920-b10a2bbb81c8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=830&q=80',
+                    imageUrl: kInfluencerImageUrl,
                     title: 'Influencer',
                     subtitle:
                         'Make a brand known to your 11+ billion audience and make money instantly',
@@ -58,8 +58,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 /// 2. brand
                 OnboardingItemPage(
                   item: OnboardingItem(
-                    imageUrl:
-                        'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=910&q=80',
+                    imageUrl: kBrandImageUrl,
                     title: 'Brand',
                     subtitle:
                         'Get your multi-million brand out there to the general public through prominent influencers',
@@ -69,8 +68,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 /// 3. audience
                 OnboardingItemPage(
                   item: OnboardingItem(
-                    imageUrl:
-                        'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1770&q=80',
+                    imageUrl: kAudienceImageUrl,
                     title: 'Audience',
                     subtitle:
                         'Get to know your dream brands though your favorite influencers',

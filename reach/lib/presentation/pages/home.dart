@@ -19,6 +19,9 @@ class _HomePageState extends State<HomePage> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
+    /// app theme
+    var appTheme = Theme.of(context);
+
     /// text theme of the application
     var textTheme = Theme.of(context).textTheme;
 
@@ -27,10 +30,15 @@ class _HomePageState extends State<HomePage> {
 
     /// set system UI overlays when the application is rendered
     /// to the user's display.
+    bool isLightTheme = appTheme.brightness == Brightness.light;
     kApplySystemOverlay(
       context,
-      systemNavigationBarDividerColor: colorScheme.primaryVariant,
-      systemNavigationBarColor: colorScheme.primaryVariant,
+      systemNavigationBarDividerColor: colorScheme.secondary,
+      systemNavigationBarColor: colorScheme.secondary,
+      statusBarIconBrightness:
+          isLightTheme ? Brightness.dark : Brightness.light,
+      systemNavigationBarIconBrightness:
+          isLightTheme ? Brightness.dark : Brightness.light,
     );
 
     return Scaffold(
@@ -43,24 +51,6 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: ReachBottomNavigationBar(
         active: _activeIndex,
         onItemTap: (index) => setState(() => _activeIndex = index),
-        items: const <ReachBottomNavigationBarItem>[
-          ReachBottomNavigationBarItem(
-            icon: Icons.home,
-            label: 'Home',
-          ),
-          ReachBottomNavigationBarItem(
-            icon: Icons.router,
-            label: 'Home',
-          ),
-          ReachBottomNavigationBarItem(
-            icon: Icons.stream,
-            label: 'Home',
-          ),
-          ReachBottomNavigationBarItem(
-            icon: Icons.person,
-            label: 'Home',
-          ),
-        ],
       ),
     );
   }

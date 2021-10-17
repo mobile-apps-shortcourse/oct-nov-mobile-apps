@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttericon/entypo_icons.dart';
 
 /// bottom navigation item
 class ReachBottomNavigationBarItem {
@@ -10,17 +11,32 @@ class ReachBottomNavigationBarItem {
 
 /// bottom navigation bar
 class ReachBottomNavigationBar extends StatelessWidget {
-  final List<ReachBottomNavigationBarItem> items;
+  final List<ReachBottomNavigationBarItem> items = [
+    const ReachBottomNavigationBarItem(
+      icon: Icons.dashboard_customize,
+      label: 'Home',
+    ),
+    const ReachBottomNavigationBarItem(
+      icon: Icons.router,
+      label: 'Home',
+    ),
+    const ReachBottomNavigationBarItem(
+      icon: Icons.stream,
+      label: 'Home',
+    ),
+    const ReachBottomNavigationBarItem(
+      icon: Icons.person,
+      label: 'Profile',
+    ),
+  ];
   final Function(int) onItemTap;
   final int active;
 
-  const ReachBottomNavigationBar({
+  ReachBottomNavigationBar({
     Key? key,
-    required this.items,
     required this.onItemTap,
     required this.active,
-  })  : assert(items.length != 0 && items.length % 2 == 0),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +53,33 @@ class ReachBottomNavigationBar extends StatelessWidget {
     return Container(
       height: kBottomNavigationBarHeight,
       width: width,
-      color: colorScheme.primaryVariant,
+      color: colorScheme.secondary,
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          for (int index = 0; index < items.length; index++) ...{
-            _buildItem(context, items[index]),
-          },
+          _buildItem(context, items[0]),
+          _buildItem(context, items[1]),
+          GestureDetector(
+            onTap: () => Navigator.push(
+              context,
+              /// show sliding sheet
+              MaterialPageRoute(builder: (context) => const Scaffold()),
+            ),
+            child: Container(
+              width: 40,
+              height: 40,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: colorScheme.onSecondary,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Entypo.plus, color: colorScheme.secondary),
+            ),
+          ),
+          _buildItem(context, items[2]),
+          _buildItem(context, items[3]),
         ],
       ),
     );
@@ -62,17 +96,35 @@ class ReachBottomNavigationBar extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => onItemTap(items.indexOf(item)),
-      child: Container(
-        width: 40,
-        height: 40,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 350),
+        width: 48,
+        height: 48,
         alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: colorScheme.secondary.withOpacity(isCurrentItem ? 0.65 : 0.2),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Icon(
-          item.icon,
-          color: colorScheme.onSecondary,
+        // decoration: BoxDecoration(
+        //   color: colorScheme.background.withOpacity(isCurrentItem ? 0.25 : 0),
+        //   borderRadius: BorderRadius.circular(8),
+        // ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              item.icon,
+              color: isCurrentItem
+                  ? colorScheme.onBackground
+                  : colorScheme.onSecondary,
+            ),
+            if (isCurrentItem)
+              Text(
+                item.label,
+                style: textTheme.overline?.copyWith(
+                  color: isCurrentItem
+                      ? colorScheme.onBackground
+                      : colorScheme.onSecondary,
+                ),
+              ),
+          ],
         ),
       ),
     );

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:reach/config/constants.dart';
+import 'package:reach/data/entities/user.dart';
+import 'package:reach/data/repositories/persistent.storage.dart';
 import 'package:twitter_login/twitter_login.dart';
 
 /// authentication state
@@ -13,6 +15,10 @@ enum AuthStatus { unauthenticated, authenticated, unknown, authenticating }
 abstract class BaseAuthRepository {
   Stream<AuthStatus> get authState;
 
+  bool get isLoggedIn;
+
+  UserType get userType;
+
   Future googleAuth();
 
   Future twitterAuth();
@@ -20,6 +26,8 @@ abstract class BaseAuthRepository {
   Future<void> signOut();
 
   void dispose();
+
+  Future<void> updateUserType(UserType userType);
 }
 
 /// implementation of [BaseAuthRepository]
@@ -27,11 +35,13 @@ class AuthRepository extends BaseAuthRepository {
   final GoogleSignIn googleLoginProvider;
   final TwitterLogin twitterLoginProvider;
   final FirebaseAuth auth;
+  final BasePersistentStorage storage;
 
   AuthRepository({
     required this.googleLoginProvider,
     required this.twitterLoginProvider,
     required this.auth,
+    required this.storage,
   });
 
   /// handles stream events of authentication state
@@ -40,6 +50,9 @@ class AuthRepository extends BaseAuthRepository {
 
   @override
   Stream<AuthStatus> get authState => _authController.stream;
+
+  @override
+  bool get isLoggedIn => storage.isLoggedIn;
 
   @override
   Future googleAuth() async {
@@ -57,6 +70,7 @@ class AuthRepository extends BaseAuthRepository {
                 accessToken: accessToken, idToken: idToken));
         var profile = credential.additionalUserInfo?.profile;
         logger.i('user profile -> $profile');
+        if (credential.user != null) storage.saveUserId(credential.user!.uid);
         _authController.add(AuthStatus.authenticated);
       }
     } catch (e) {
@@ -71,6 +85,8 @@ class AuthRepository extends BaseAuthRepository {
     await googleLoginProvider.signOut();
     // disconnect service
     await googleLoginProvider.disconnect();
+    // clear storage
+    await storage.clear();
   }
 
   @override
@@ -88,6 +104,7 @@ class AuthRepository extends BaseAuthRepository {
         );
         var profile = credential.additionalUserInfo?.profile;
         logger.i('user profile -> $profile');
+        if (credential.user != null) storage.saveUserId(credential.user!.uid);
         _authController.add(AuthStatus.authenticated);
       } else {
         logger.e(authResult.errorMessage);
@@ -103,4 +120,11 @@ class AuthRepository extends BaseAuthRepository {
   void dispose() async {
     await _authController.close();
   }
+
+  @override
+  Future<void> updateUserType(UserType userType) async =>
+      await storage.saveUserType(userType);
+
+  @override
+  UserType get userType => storage.userType;
 }

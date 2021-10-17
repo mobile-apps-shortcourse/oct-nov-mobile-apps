@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
-import 'package:reach/config/dependency.injection.dart';
+import 'package:reach/config/constants.dart';
+import 'package:reach/config/extensions.dart';
 import 'package:reach/config/themes.dart';
 import 'package:reach/presentation/blocs/auth_cubit.dart';
-import 'package:reach/presentation/pages/home.dart';
+import 'package:reach/presentation/pages/account.picker.dart';
 import 'package:reach/presentation/widgets/buttons.dart';
+import 'package:sliding_sheet/sliding_sheet.dart';
 
 /// authentication page.
 /// handles login & registration
@@ -18,14 +20,7 @@ class AuthenticationPage extends StatefulWidget {
 }
 
 class _AuthenticationPageState extends State<AuthenticationPage> {
-  final _authBloc = AuthCubit(repository: authRepository);
   bool _loading = false;
-
-  @override
-  void dispose() {
-    _authBloc.close();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,43 +28,41 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
+    /// app theme
+    var appTheme = Theme.of(context);
+
     /// text theme of the application
-    var textTheme = Theme.of(context).textTheme;
+    var textTheme = appTheme.textTheme;
 
     /// color scheme of the application
-    var colorScheme = Theme.of(context).colorScheme;
+    var colorScheme = appTheme.colorScheme;
 
     /// set system UI overlays when the application is rendered
     /// to the user's display.
-    kApplySystemOverlay(context);
+    bool isLightTheme = appTheme.brightness == Brightness.light;
+    kApplySystemOverlay(
+      context,
+      statusBarIconBrightness:
+          isLightTheme ? Brightness.dark : Brightness.light,
+      systemNavigationBarIconBrightness:
+          isLightTheme ? Brightness.dark : Brightness.light,
+    );
 
     return BlocListener<AuthCubit, AuthState>(
-      bloc: _authBloc,
+      bloc: context.read<AuthCubit>(),
       listener: (context, state) {
         if (mounted) setState(() => _loading = state is AuthLoading);
 
         /// show error message if process fails
         if (state is AuthError && mounted) {
-          ScaffoldMessenger.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                // behavior: SnackBarBehavior.floating,
-                content: Text(
-                  state.reason,
-                  style:
-                      textTheme.button?.copyWith(color: colorScheme.background),
-                ),
-                backgroundColor: colorScheme.primaryVariant,
-              ),
-            );
+          context.showSnackBar(state.reason);
         }
 
         /// navigate to home page when logged in
         if (state is AuthSuccess) {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (_) => const HomePage()),
+              MaterialPageRoute(builder: (_) => const AccountPickerPage()),
               (route) => false);
         }
       },
@@ -127,7 +120,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         outlined: true,
                         onTap: () async {
                           /// perform google auth
-                          await _authBloc.googleSignIn();
+                          await context.read<AuthCubit>().googleSignIn();
                         },
                       ),
                     ),
@@ -141,14 +134,14 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         foreground: Colors.white,
                         onTap: () async {
                           /// perform twitter auth
-                          await _authBloc.twitterSignIn();
+                          await context.read<AuthCubit>().twitterSignIn();
                         },
                       ),
                     ),
                   ],
                   const SizedBox(height: 24),
                   TextButton(
-                    onPressed: () => null,
+                    onPressed: _showTermsAndConditionsSheet,
                     child: Text(
                       'Terms & conditions',
                       style: textTheme.button,
@@ -161,5 +154,59 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         ),
       ),
     );
+  }
+
+  void _showTermsAndConditionsSheet() async {
+    /// dimensions of the current display
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
+    /// app theme
+    var appTheme = Theme.of(context);
+
+    /// text theme of the application
+    var textTheme = appTheme.textTheme;
+
+    /// color scheme of the application
+    var colorScheme = appTheme.colorScheme;
+
+    final result = await showSlidingBottomSheet(context,
+        resizeToAvoidBottomInset: true, builder: (context) {
+      return SlidingSheetDialog(
+        elevation: 8,
+        cornerRadius: 16,
+        backdropColor: colorScheme.onBackground.withOpacity(0.2),
+        snapSpec: const SnapSpec(
+          snap: true,
+          snappings: [0.4, 0.7, 1.0],
+          positioning: SnapPositioning.relativeToAvailableSpace,
+        ),
+        builder: (context, state) {
+          return Container(
+            color: colorScheme.background,
+            height: height * 0.6,
+            child: Center(
+              child: Material(
+                color: colorScheme.background,
+                child: InkWell(
+                  onTap: () => Navigator.pop(context, 'This is the result.'),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+
+                    /// todo -> add terms & conditions
+                    child: Text(
+                      kFeatureUnderDev,
+                      style: textTheme.bodyText1,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    });
+
+    print(result); // This is the result.
   }
 }

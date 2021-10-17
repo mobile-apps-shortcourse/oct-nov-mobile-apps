@@ -10,13 +10,17 @@ const _kPink900 = Color(0xff442c2e);
 const _kError = Color(0xffe30425);
 const _kWhite = Colors.white;
 const _kBlack = Colors.black;
+const _kDarkBg = Color(0xff33333D);
+const _kDarkPrimary = Color(0xff1EB980);
+const _kDarkPrimaryVariant = Color(0xffFF6859);
+const _kDarkSecondary = Color(0xffFF6859);
+const _kDarkSecondaryVariant = Color(0xff045D56);
+const _kDarkSurface = Color(0xff373740);
+const _kDarkError = Color(0xffFFCF44);
 
 // fonts
-TextTheme _kDefaultTextTheme(BuildContext context) {
-  var brightness = Theme.of(context).brightness;
-  var textColor = brightness == Brightness.dark ? _kWhite : _kPink900;
-  var buttonTextColor = _kPink900;
-
+TextTheme _kDefaultTextTheme(
+    BuildContext context, Color textColor, Color buttonTextColor) {
   return GoogleFonts.rubikTextTheme().copyWith(
     headline1: GoogleFonts.rubik(
       fontSize: 98,
@@ -111,28 +115,29 @@ ThemeData kLightTheme(BuildContext context) => ThemeData.light().copyWith(
         onError: _kWhite,
         background: _kPink50,
         onBackground: _kPink900,
-        surface: _kPink50,
+        surface: _kPink100,
         onSurface: _kPink900,
       ),
-      textTheme: _kDefaultTextTheme(context),
+      textTheme: _kDefaultTextTheme(context, _kPink900, _kPink900),
     );
 
 ThemeData kDarkTheme(BuildContext context) => ThemeData.dark().copyWith(
-      textTheme: _kDefaultTextTheme(context),
+      scaffoldBackgroundColor: _kDarkBg,
+      textTheme: _kDefaultTextTheme(context, _kWhite, _kWhite),
       colorScheme: const ColorScheme.dark().copyWith(
-          // primary: ,
-          // primaryVariant: ,
-          // onPrimary: ,
-          // secondary: ,
-          // secondaryVariant: ,
-          // onSecondary: ,
-          // error: ,
-          // onError: ,
-          // background: ,
-          // onBackground: ,
-          // surface: ,
-          // onSurface: ,
-          ),
+        primary: _kDarkPrimary,
+        primaryVariant: _kDarkPrimaryVariant,
+        onPrimary: _kWhite,
+        secondary: _kDarkSecondary,
+        secondaryVariant: _kDarkSecondaryVariant,
+        onSecondary: _kBlack,
+        error: _kDarkError,
+        onError: _kBlack,
+        background: _kDarkBg,
+        onBackground: _kWhite,
+        surface: _kDarkSurface,
+        onSurface: _kWhite,
+      ),
     );
 
 // update system chrome
@@ -141,8 +146,8 @@ void kApplySystemOverlay(
   Color? statusBarColor,
   Color? systemNavigationBarColor,
   Color? systemNavigationBarDividerColor,
-  Brightness statusBarIconBrightness = Brightness.dark,
-  Brightness systemNavigationBarIconBrightness = Brightness.dark,
+  Brightness? statusBarIconBrightness,
+  Brightness? systemNavigationBarIconBrightness,
 }) {
   // get the current theme of the application
   var currentTheme = Theme.of(context);

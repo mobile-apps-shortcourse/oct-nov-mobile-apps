@@ -32,6 +32,10 @@ dependencies:
   google_fonts: ^2.1.0
   cached_network_image:
   font_awesome_flutter:
+  fluttericon:
+  shared_preferences:
+  sliding_sheet:
+  carousel_slider:
   google_sign_in:
   twitter_login:
   riverpod:
