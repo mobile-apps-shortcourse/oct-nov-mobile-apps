@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttericon/entypo_icons.dart';
 import 'package:reach/config/constants.dart';
+import 'package:reach/config/extensions.dart';
 import 'package:reach/presentation/blocs/auth_cubit.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
+
+/// popup menu actions
+enum PopupMenuAction { aboutApp, helpAndSupport, signOut }
 
 /// bottom navigation item
 class ReachBottomNavigationBarItem {
@@ -17,16 +21,12 @@ class ReachBottomNavigationBarItem {
 class ReachBottomNavigationBar extends StatelessWidget {
   final List<ReachBottomNavigationBarItem> items = [
     const ReachBottomNavigationBarItem(
-      icon: Icons.dashboard_customize,
+      icon: Entypo.home,
       label: 'Home',
     ),
     const ReachBottomNavigationBarItem(
-      icon: Icons.router,
-      label: 'Home',
-    ),
-    const ReachBottomNavigationBarItem(
-      icon: Icons.stream,
-      label: 'Home',
+      icon: Entypo.search,
+      label: 'Search',
     ),
     const ReachBottomNavigationBarItem(
       icon: Icons.person,
@@ -85,7 +85,26 @@ class ReachBottomNavigationBar extends StatelessWidget {
                 ),
               },
               _buildItem(context, items[2]),
-              _buildItem(context, items[3]),
+              PopupMenuButton<PopupMenuAction>(
+                itemBuilder: (context) => const [
+                  PopupMenuItem(
+                    child: Text('Help & Support'),
+                    value: PopupMenuAction.helpAndSupport,
+                  ),
+                  PopupMenuItem(
+                    child: Text('About Us'),
+                    value: PopupMenuAction.aboutApp,
+                  ),
+                  PopupMenuItem(
+                    child: Text('Sign out'),
+                    value: PopupMenuAction.signOut,
+                  ),
+                ],
+                child: const Icon(Icons.more_vert),
+
+                /// todo -> apply options
+                onSelected: (option) => context.showSnackBar(kFeatureUnderDev),
+              ),
             ],
           ),
         );

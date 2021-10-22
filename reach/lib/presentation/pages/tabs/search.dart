@@ -1,0 +1,16 @@
+part of '../home.dart';
+
+/// shows search UI
+class SearchTab extends StatefulWidget {
+  const SearchTab({Key? key}) : super(key: key);
+
+  @override
+  _SearchTabState createState() => _SearchTabState();
+}
+
+class _SearchTabState extends State<SearchTab> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}

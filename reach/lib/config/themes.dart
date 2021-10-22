@@ -104,6 +104,7 @@ TextTheme _kDefaultTextTheme(
 // theme modes
 ThemeData kLightTheme(BuildContext context) => ThemeData.light().copyWith(
       scaffoldBackgroundColor: _kPink50,
+      appBarTheme: const AppBarTheme(backgroundColor: _kPink50, elevation: 0),
       colorScheme: const ColorScheme.light().copyWith(
         primary: _kPink100,
         primaryVariant: _kPink900,
