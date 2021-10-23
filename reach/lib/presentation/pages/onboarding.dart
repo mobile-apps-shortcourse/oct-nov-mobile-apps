@@ -196,7 +196,7 @@ class OnboardingItemPage extends StatelessWidget {
           bottom: 0,
           left: 0,
           right: 0,
-          height: height * 0.3,
+          height: height * 0.35,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: width * 0.1),
             child: Column(
