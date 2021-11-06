@@ -4,11 +4,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:reach/bloc/authentication_cubit.dart';
 import 'package:reach/config/extensions.dart';
+import 'package:reach/config/injector.dart';
 import 'package:reach/config/themes.dart';
 import 'package:reach/presentation/pages/account.picker.dart';
 import 'package:reach/presentation/widgets/buttons.dart';
 import 'package:reach/repository/auth.repository.dart';
-import 'package:reach/repository/user.repository.dart';
 
 /// allows for user authentication using google & twitter.
 /// it uses the auth bloc to achieve this purpose.
@@ -21,8 +21,7 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   /// bloc
-  final _authCubit = AuthenticationCubit(
-      repository: FirebaseAuthRepository(userRepo: UserRepository()));
+  final _authCubit = AuthenticationCubit(repository: Injector.get());
 
   bool _loading = false;
 

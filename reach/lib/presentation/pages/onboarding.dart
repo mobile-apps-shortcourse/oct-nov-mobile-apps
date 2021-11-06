@@ -21,10 +21,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    /// dimensions of the current display
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-
     /// text theme of the application
     var textTheme = Theme.of(context).textTheme;
 

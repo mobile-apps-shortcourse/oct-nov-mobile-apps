@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:reach/config/constants.dart';
+import 'package:reach/config/injector.dart';
 import 'package:reach/config/themes.dart';
+import 'package:reach/presentation/pages/home.dart';
 import 'package:reach/presentation/pages/onboarding.dart';
 import 'package:reach/presentation/widgets/buttons.dart';
+import 'package:reach/bloc/authentication_cubit.dart';
 
 /// splash page -> this is the first page any user sees when the application
 /// is first launched.
@@ -14,6 +17,14 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  final _authCubit = AuthenticationCubit(repository: Injector.get());
+
+  @override
+  void dispose() {
+    _authCubit.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var kTheme = Theme.of(context);
@@ -96,14 +107,16 @@ class _SplashPageState extends State<SplashPage> {
             bottom: 24,
             child: Center(
               child: PrimaryButton(
-                label: 'Explore',
+                label: _authCubit.userIsLoggedIn ? 'Explore' : 'Sign in',
                 icon: Icons.arrow_right_alt,
                 onTap: () {
                   // navigate to the onboarding page
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const OnboardingPage()),
+                        builder: (context) => _authCubit.userIsLoggedIn
+                            ? const HomePage()
+                            : const OnboardingPage()),
                     (_) => false,
                   );
                 },

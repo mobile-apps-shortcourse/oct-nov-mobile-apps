@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reach/config/injector.dart';
 import 'package:reach/model/user.dart';
+import 'package:reach/repository/persistent.storage.repository.dart';
 
 abstract class BaseUserRepository {
   /// update user
@@ -11,12 +12,14 @@ abstract class BaseUserRepository {
 
 /// implementation of [BaseUserRepository]
 class UserRepository implements BaseUserRepository {
-  final _auth = FirebaseAuth.instance;
-  final _db = FirebaseFirestore.instance;
+  final PersistentStorageRepository storageRepo;
+  final _db = dependencyProvider.read(firebaseFirestoreProvider);
+
+  UserRepository({required this.storageRepo});
 
   @override
   Future<void> updateUser({required UserAccount account}) async {
-    if (_auth.currentUser == null) return;
+    if (!storageRepo.isLoggedIn) return;
 
     /// reference to user document
     var userDoc = _db.collection('users').doc(account.id);
@@ -25,15 +28,13 @@ class UserRepository implements BaseUserRepository {
 
   @override
   Stream<UserAccount?> currentUser() async* {
-    var firebaseUser = _auth.currentUser;
-
     /// user is not signed in yet
-    if (firebaseUser == null) yield* const Stream.empty();
+    if (!storageRepo.isLoggedIn) yield* const Stream.empty();
 
     /// user is signed in, get user data from database
     var userStream = _db
         .collection('users')
-        .doc(firebaseUser!.uid)
+        .doc(storageRepo.userId!)
         .snapshots()
         .map((snapshot) => snapshot.exists && snapshot.data() != null
             ? UserAccount.fromJson(snapshot.data()!)

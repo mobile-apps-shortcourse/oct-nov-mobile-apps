@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reach/bloc/authentication_cubit.dart';
 import 'package:reach/bloc/user_cubit.dart';
 import 'package:reach/config/constants.dart';
+import 'package:reach/config/injector.dart';
+import 'package:reach/config/themes.dart';
 import 'package:reach/model/user.dart';
+import 'package:reach/presentation/pages/home.dart';
 import 'package:reach/presentation/widgets/buttons.dart';
-import 'package:reach/repository/auth.repository.dart';
-import 'package:reach/repository/user.repository.dart';
 import 'package:reach/config/extensions.dart';
 
 /// account type wrapper.
@@ -28,7 +28,8 @@ class AccountPickerPage extends StatefulWidget {
 }
 
 class _AccountPickerPageState extends State<AccountPickerPage> {
-  final _userCubit = UserCubit(repository: UserRepository());
+  final _userCubit = UserCubit(repository: Injector.get());
+
   bool _loading = false;
   UserType _selectedUserType = UserType.unknown;
   final _userTypes = <AccountType>[
@@ -65,6 +66,11 @@ class _AccountPickerPageState extends State<AccountPickerPage> {
     /// color scheme of the application
     var colorScheme = kTheme.colorScheme;
 
+    kApplySystemOverlay(
+      context,
+      statusBarColor: colorScheme.background,
+    );
+
     return BlocListener(
       bloc: _userCubit,
       listener: (context, state) {
@@ -73,7 +79,7 @@ class _AccountPickerPageState extends State<AccountPickerPage> {
           context.showSnackBar('User updated successfully');
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => Container(color: Colors.amber),
+                builder: (context) => const HomePage(),
               ),
               (route) => false);
         }
@@ -144,9 +150,6 @@ class AccountPickerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var kTheme = Theme.of(context);
-
-    /// text theme of the application
-    var textTheme = kTheme.textTheme;
 
     /// color scheme of the application
     var colorScheme = kTheme.colorScheme;

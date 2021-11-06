@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:reach/config/constants.dart';
 import 'package:reach/repository/user.repository.dart';
 import 'package:reach/model/user.dart';
 
@@ -32,7 +33,7 @@ class UserCubit extends Cubit<UserState> {
     // get the first result from the stream
     var account = await repository.currentUser().first;
     if (account != null) {
-      print(account);
+      logger.i(account);
       account = account.copyWith(
         avatar: avatar,
         createdOn: createdOn,

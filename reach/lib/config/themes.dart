@@ -9,7 +9,6 @@ const _kPink100 = Color(0xfffedbd0);
 const _kPink900 = Color(0xff442c2e);
 const _kError = Color(0xffe30425);
 const _kWhite = Colors.white;
-const _kBlack = Colors.black;
 
 // dark mode colors
 const _darkPrimary = Color(0xff2e2fea);

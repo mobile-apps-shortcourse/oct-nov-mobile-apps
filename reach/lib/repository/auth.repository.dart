@@ -1,11 +1,12 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:reach/config/injector.dart';
 import 'package:reach/model/user.dart';
+import 'package:reach/repository/persistent.storage.repository.dart';
 import 'package:reach/repository/user.repository.dart';
 import 'package:twitter_login/twitter_login.dart';
 
@@ -33,26 +34,30 @@ abstract class BaseAuthRepository {
 /// implementation of [BaseAuthRepository] using Firebase
 class FirebaseAuthRepository extends ChangeNotifier
     implements BaseAuthRepository {
-  /// firebase authentication instance
-  final _auth = FirebaseAuth.instance;
+  /// user repo
   final BaseUserRepository userRepo;
+
+  // storage repo
+  final PersistentStorageRepository storageRepo;
+
+  /// firebase authentication instance
+  final _auth = dependencyProvider.read(firebaseAuthProvider);
+
+  /// google auth instance
   final _googleSignIn = GoogleSignIn();
-  var _isLoggedIn = false;
 
   /// constructor
-  FirebaseAuthRepository({required this.userRepo}) {
-    _auth.authStateChanges().listen((user) {
-      _isLoggedIn = user != null;
-      notifyListeners();
-    });
-  }
+  FirebaseAuthRepository({
+    required this.userRepo,
+    required this.storageRepo,
+  });
 
   /// controller for the authentication state events
   final _authStateController = StreamController<AuthState>.broadcast();
 
   /// check whether user is logged in
   @override
-  bool get userIsLoggedIn => _isLoggedIn;
+  bool get userIsLoggedIn => storageRepo.isLoggedIn;
 
   @override
   Stream<AuthState> get observeAuthState => _authStateController.stream;
@@ -104,6 +109,7 @@ class FirebaseAuthRepository extends ChangeNotifier
           /// store user data in the cloud firestore
           /// users/1234
           await userRepo.updateUser(account: userAccount);
+          await storageRepo.saveUserId(userAccount.id);
           _authStateController.add(AuthState.success);
         }
       } on PlatformException catch (e) {
@@ -155,7 +161,7 @@ class FirebaseAuthRepository extends ChangeNotifier
             /// store user data in the cloud firestore
             /// users/1234
             await userRepo.updateUser(account: userAccount);
-
+            await storageRepo.saveUserId(userAccount.id);
             _authStateController.add(AuthState.success);
             break;
           case TwitterLoginStatus.cancelledByUser:
@@ -193,6 +199,8 @@ class FirebaseAuthRepository extends ChangeNotifier
 
     /// firebase auth sign out
     await _auth.signOut();
+
+    await storageRepo.clear();
 
     _authStateController.add(AuthState.none);
   }
