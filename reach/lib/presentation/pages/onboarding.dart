@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:reach/config/themes.dart';
 import 'package:reach/presentation/widgets/buttons.dart';
@@ -238,8 +239,8 @@ class OnboardingItemPage extends StatelessWidget {
               decoration: BoxDecoration(
                 color: colorScheme.primary,
               ),
-              child: Image.network(
-                item.imageUrl,
+              child: CachedNetworkImage(
+                imageUrl: item.imageUrl,
                 fit: BoxFit.cover,
               ),
             ),

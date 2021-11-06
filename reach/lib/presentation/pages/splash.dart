@@ -20,10 +20,6 @@ class _SplashPageState extends State<SplashPage> {
     /// to the user's display.
     kApplySystemOverlay(context);
 
-    /// dimensions of the current display
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-
     /// text theme of the application
     var textTheme = Theme.of(context).textTheme;
 

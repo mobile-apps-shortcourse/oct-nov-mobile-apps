@@ -6,7 +6,9 @@ extension BuildContextX on BuildContext {
     ScaffoldMessenger.of(this)
       ..removeCurrentSnackBar()
       ..showSnackBar(SnackBar(
-        content: Text(message),
+        content: Text(message, style : TextStyle(
+          color: Theme.of(this).colorScheme.background,
+        )),
       ));
   }
 }
