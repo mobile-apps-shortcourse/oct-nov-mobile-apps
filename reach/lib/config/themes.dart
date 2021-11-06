@@ -117,7 +117,7 @@ ThemeData kLightTheme(BuildContext context) => ThemeData.light().copyWith(
         onError: _kWhite,
         background: _kPink50,
         onBackground: _kPink900,
-        surface: _kPink50,
+        surface: _kPink100,
         onSurface: _kPink900,
       ),
       textTheme: _kDefaultTextTheme(_kPink900, _kWhite),

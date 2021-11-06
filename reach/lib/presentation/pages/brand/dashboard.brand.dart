@@ -130,7 +130,8 @@ class _BrandDashboardState extends State<BrandDashboard> {
                   children: [
                     Text(
                       _analytics[index].title,
-                      style: textTheme.button,
+                      style: textTheme.button
+                          ?.copyWith(color: colorScheme.onSurface),
                     ),
                     Expanded(
                         child: Padding(
@@ -185,7 +186,8 @@ class _BrandDashboardState extends State<BrandDashboard> {
                 children: [
                   Text(
                     'See more',
-                    style: textTheme.button,
+                    style: textTheme.button
+                        ?.copyWith(color: colorScheme.onBackground),
                     textAlign: TextAlign.start,
                   ),
                   const SizedBox(width: 4),

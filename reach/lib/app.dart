@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reach/config/themes.dart';
 import 'package:reach/presentation/pages/splash.dart';
@@ -16,6 +17,7 @@ class ReachApp extends StatelessWidget {
       darkTheme: kDarkTheme(context),
       themeMode: ThemeMode.system,
       home: const SplashPage(),
+      scrollBehavior: const CupertinoScrollBehavior(),
     );
   }
 }
