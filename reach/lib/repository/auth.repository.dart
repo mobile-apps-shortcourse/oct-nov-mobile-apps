@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:reach/model/user.dart';
+import 'package:reach/repository/user.repository.dart';
 import 'package:twitter_login/twitter_login.dart';
 
 /// sign in providers
@@ -27,9 +28,6 @@ abstract class BaseAuthRepository {
 
   /// sign out a user
   Future<void> signOut();
-
-  /// update user
-  Future<void> updateUser({required UserAccount account});
 }
 
 /// implementation of [BaseAuthRepository] using Firebase
@@ -37,12 +35,12 @@ class FirebaseAuthRepository extends ChangeNotifier
     implements BaseAuthRepository {
   /// firebase authentication instance
   final _auth = FirebaseAuth.instance;
-  final _db = FirebaseFirestore.instance;
+  final BaseUserRepository userRepo;
   final _googleSignIn = GoogleSignIn();
   var _isLoggedIn = false;
 
   /// constructor
-  FirebaseAuthRepository() {
+  FirebaseAuthRepository({required this.userRepo}) {
     _auth.authStateChanges().listen((user) {
       _isLoggedIn = user != null;
       notifyListeners();
@@ -100,15 +98,12 @@ class FirebaseAuthRepository extends ChangeNotifier
             email: email!,
             lastLoginDate: today,
             createdOn: today,
+            avatar: userCredential.user?.photoURL,
           );
 
           /// store user data in the cloud firestore
           /// users/1234
-          await _db.collection('users').doc(userAccount.id).set(
-                userAccount.toJson(),
-                SetOptions(merge: true),
-              );
-
+          await userRepo.updateUser(account: userAccount);
           _authStateController.add(AuthState.success);
         }
       } on PlatformException catch (e) {
@@ -154,14 +149,12 @@ class FirebaseAuthRepository extends ChangeNotifier
               email: email!,
               lastLoginDate: today,
               createdOn: today,
+              avatar: userCredential.user?.photoURL,
             );
 
             /// store user data in the cloud firestore
             /// users/1234
-            await _db.collection('users').doc(userAccount.id).set(
-                  userAccount.toJson(),
-                  SetOptions(merge: true),
-                );
+            await userRepo.updateUser(account: userAccount);
 
             _authStateController.add(AuthState.success);
             break;
@@ -202,13 +195,5 @@ class FirebaseAuthRepository extends ChangeNotifier
     await _auth.signOut();
 
     _authStateController.add(AuthState.none);
-  }
-
-  @override
-  Future<void> updateUser({required UserAccount account}) async {
-    if (_auth.currentUser == null) return;
-
-    // todo -> start here. run transaction on users collection to get current user data and update accordingly
-    _db;
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reach/bloc/authentication_cubit.dart';
 import 'package:reach/model/user.dart';
 import 'package:reach/repository/auth.repository.dart';
+import 'package:reach/repository/user.repository.dart';
 
 /// account type wrapper.
 /// used to create te account type picker widget
@@ -21,7 +22,8 @@ class AccountPickerPage extends StatefulWidget {
 }
 
 class _AccountPickerPageState extends State<AccountPickerPage> {
-  final _authCubit = AuthenticationCubit(repository: FirebaseAuthRepository());
+  final _authCubit = AuthenticationCubit(
+      repository: FirebaseAuthRepository(userRepo: UserRepository()));
   bool _loading = false;
   UserType _selectedUserType = UserType.unknown;
   final _userTypes = <UserType>[

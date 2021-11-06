@@ -13,10 +13,10 @@ const _kBlack = Colors.black;
 
 // dark mode colors
 const _darkPrimary = Color(0xff2e2fea);
-const _darkPrimaryVariant = Color(0xff);
-const _darkError = Color(0xff);
+const _darkPrimaryVariant = Color(0xff2e2fea);
+const _darkError = Color(0xfff75456);
 const _darkBackground = Color(0xff07060b);
-const _darkSurface = Color(0xff);
+const _darkSurface = Color(0xff403638);
 
 // fonts
 TextTheme _kDefaultTextTheme(Color textColor, Color buttonTextColor) =>
@@ -133,7 +133,7 @@ ThemeData kDarkTheme(BuildContext context) => ThemeData.dark().copyWith(
         onError: _kWhite,
         background: _darkBackground,
         onBackground: _kWhite,
-        surface: _darkBackground,
+        surface: _darkSurface,
         onSurface: _kWhite,
       ),
     );

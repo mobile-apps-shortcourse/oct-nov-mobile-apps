@@ -8,6 +8,7 @@ import 'package:reach/config/themes.dart';
 import 'package:reach/presentation/pages/account.picker.dart';
 import 'package:reach/presentation/widgets/buttons.dart';
 import 'package:reach/repository/auth.repository.dart';
+import 'package:reach/repository/user.repository.dart';
 
 /// allows for user authentication using google & twitter.
 /// it uses the auth bloc to achieve this purpose.
@@ -20,7 +21,8 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   /// bloc
-  final _authCubit = AuthenticationCubit(repository: FirebaseAuthRepository());
+  final _authCubit = AuthenticationCubit(
+      repository: FirebaseAuthRepository(userRepo: UserRepository()));
 
   bool _loading = false;
 
@@ -36,18 +38,25 @@ class _AuthPageState extends State<AuthPage> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
+    var kTheme = Theme.of(context);
+
     /// text theme of the application
-    var textTheme = Theme.of(context).textTheme;
+    var textTheme = kTheme.textTheme;
 
     /// color scheme of the application
-    var colorScheme = Theme.of(context).colorScheme;
+    var colorScheme = kTheme.colorScheme;
 
     /// set system UI overlays when the application is rendered
     /// to the user's display.
     kApplySystemOverlay(
       context,
       statusBarColor: colorScheme.background,
-      statusBarIconBrightness: Brightness.dark,
+      statusBarIconBrightness: kTheme.brightness == Brightness.dark
+          ? Brightness.light
+          : Brightness.dark,
+      systemNavigationBarIconBrightness: kTheme.brightness == Brightness.dark
+          ? Brightness.light
+          : Brightness.dark,
     );
 
     return Scaffold(
@@ -57,7 +66,8 @@ class _AuthPageState extends State<AuthPage> {
           listener: (context, state) {
             if (state is AuthenticationSuccess) {
               Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => const AccountPickerPage()),
+                MaterialPageRoute(
+                    builder: (context) => const AccountPickerPage()),
                 (route) => false,
               );
             }
@@ -132,6 +142,8 @@ class _AuthPageState extends State<AuthPage> {
                       provider: SignInProvider.twitter),
                 ),
               ],
+
+              const SizedBox(height: 24),
 
               /// text button
               TextButton(

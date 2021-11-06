@@ -28,7 +28,8 @@ class UserAccount {
     this.avatar,
   });
 
+  factory UserAccount.fromJson(Map<String, dynamic> json) =>
+      _$UserAccountFromJson(json);
+
   Map<String, dynamic> toJson() => _$UserAccountToJson(this);
-
-
 }

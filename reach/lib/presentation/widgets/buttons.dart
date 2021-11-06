@@ -47,12 +47,21 @@ class PrimaryButton extends StatelessWidget {
             Text(
               label,
               style: textTheme.button?.copyWith(
-                color: foreground ?? colorScheme.onPrimary,
+                color: foreground ??
+                    (outline
+                        ? colorScheme.primaryVariant
+                        : colorScheme.onPrimary),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20),
-              child: Icon(icon, color: foreground ?? colorScheme.onPrimary),
+              child: Icon(
+                icon,
+                color: foreground ??
+                    (outline
+                        ? colorScheme.primaryVariant
+                        : colorScheme.onPrimary),
+              ),
             ),
           ],
         ),
