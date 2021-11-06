@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         extendBodyBehindAppBar: false,
-        body: _loading
+        body: _loading || _accountType == null
             ? const Center(child: CircularProgressIndicator.adaptive())
             : SizedBox.expand(
                 child: _accountType == UserType.brand
