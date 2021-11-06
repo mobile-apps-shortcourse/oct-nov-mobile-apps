@@ -16,15 +16,25 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
-    /// set system UI overlays when the application is rendered
-    /// to the user's display.
-    kApplySystemOverlay(context);
+    var kTheme = Theme.of(context);
 
     /// text theme of the application
-    var textTheme = Theme.of(context).textTheme;
+    var textTheme = kTheme.textTheme;
 
     /// color scheme of the application
-    var colorScheme = Theme.of(context).colorScheme;
+    var colorScheme = kTheme.colorScheme;
+
+    /// set system UI overlays when the application is rendered
+    /// to the user's display.
+    kApplySystemOverlay(
+      context,
+      statusBarIconBrightness: kTheme.brightness == Brightness.dark
+          ? Brightness.light
+          : Brightness.dark,
+      systemNavigationBarIconBrightness: kTheme.brightness == Brightness.dark
+          ? Brightness.light
+          : Brightness.dark,
+    );
 
     return Scaffold(
       body: Stack(

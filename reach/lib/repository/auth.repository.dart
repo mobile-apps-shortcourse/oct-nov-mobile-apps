@@ -206,10 +206,9 @@ class FirebaseAuthRepository extends ChangeNotifier
 
   @override
   Future<void> updateUser({required UserAccount account}) async {
-    if(_auth.currentUser == null) return;
+    if (_auth.currentUser == null) return;
 
-
-
+    // todo -> start here. run transaction on users collection to get current user data and update accordingly
     _db;
   }
 }
