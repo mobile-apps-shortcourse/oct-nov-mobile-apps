@@ -101,6 +101,11 @@ TextTheme _kDefaultTextTheme(Color textColor, Color buttonTextColor) =>
 // theme modes
 ThemeData kLightTheme(BuildContext context) => ThemeData.light().copyWith(
       scaffoldBackgroundColor: _kPink50,
+      appBarTheme: const AppBarTheme(
+        elevation: 0,
+        backgroundColor: _kPink50,
+        iconTheme: IconThemeData(color: _kPink900),
+      ),
       colorScheme: const ColorScheme.light().copyWith(
         primary: _kPink100,
         primaryVariant: _kPink900,
@@ -120,6 +125,11 @@ ThemeData kLightTheme(BuildContext context) => ThemeData.light().copyWith(
 
 ThemeData kDarkTheme(BuildContext context) => ThemeData.dark().copyWith(
       textTheme: _kDefaultTextTheme(_kWhite, _kWhite),
+      appBarTheme: const AppBarTheme(
+        elevation: 0,
+        backgroundColor: _darkBackground,
+        iconTheme: IconThemeData(color: _kWhite),
+      ),
       scaffoldBackgroundColor: _darkBackground,
       colorScheme: const ColorScheme.dark().copyWith(
         primary: _darkPrimary,
