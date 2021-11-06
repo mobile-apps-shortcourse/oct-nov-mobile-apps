@@ -6,6 +6,10 @@ part 'user.g.dart';
 /// user type
 enum UserType { brand, audience, influencer, unknown }
 
+extension UserTypeX on UserType {
+  String get name => toString().replaceAll('UserType.', '').toUpperCase();
+}
+
 /// user data model
 @CopyWith()
 @JsonSerializable()
@@ -32,4 +36,7 @@ class UserAccount {
       _$UserAccountFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserAccountToJson(this);
+
+  @override
+  String toString() => toJson().toString();
 }
