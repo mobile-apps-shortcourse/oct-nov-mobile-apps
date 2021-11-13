@@ -1,4 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:slackui/sample.dataset.dart';
+
+part 'tabs/dms.dart';
+
+/// parts of this part
+part 'tabs/home.dart';
+
+part 'tabs/mentions.dart';
+
+part 'tabs/profile.dart';
+
+part 'tabs/search.dart';
 
 /// first page to display when the user launches the application
 class HomePage extends StatefulWidget {
@@ -40,9 +52,15 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: Center(
-        child: Text('Hello world'),
-      ),
+      body: _currentIndex == 0
+          ? const HomeTab()
+          : _currentIndex == 1
+              ? const DMTab()
+              : _currentIndex == 2
+                  ? const MentionsTab()
+                  : _currentIndex == 3
+                      ? const SearchTab()
+                      : const ProfileTab(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.drive_file_rename_outline),
         onPressed: () {
@@ -81,3 +99,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+void showSnackBar(BuildContext context, String message) =>
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(content: Text(message)),
+      );

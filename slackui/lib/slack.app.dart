@@ -17,11 +17,12 @@ class SlackApp extends StatelessWidget {
         home: const HomePage(),
         theme: ThemeData.light().copyWith(
           textTheme: kDefaultTextStyle,
-          colorScheme: const ColorScheme.light(
+          colorScheme: ColorScheme.light(
             primary: kPrimaryColor,
             secondary: kSecondaryColor,
             onSecondary: Colors.white,
             onPrimary: Colors.white,
+            surface: Colors.grey.withOpacity(0.2),
           ),
           bottomNavigationBarTheme: const BottomNavigationBarThemeData(
             backgroundColor: Colors.white,
