@@ -6,10 +6,14 @@ import 'package:reach/config/injector.dart';
 import 'package:reach/config/extensions.dart';
 import 'package:reach/config/themes.dart';
 import 'package:reach/model/user.dart';
+import 'package:reach/presentation/widgets/influencer.dart';
+import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 
 part 'audience/dashboard.audience.dart';
 part 'brand/dashboard.brand.dart';
 part 'influencer/dashboard.influencer.dart';
+part 'profile.settings.dart';
+part 'influencers.list.dart';
 
 /// renderes the right page for the current user
 class HomePage extends StatefulWidget {
@@ -24,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   UserType? _accountType;
   bool _loading = false;
   UserAccount? _currentUser;
+  int _selectedIndex = 0;
 
   @override
   void dispose() {
@@ -83,7 +88,7 @@ class _HomePageState extends State<HomePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Dashboard'),
+          title: Text(applicationName),
           centerTitle: true,
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(Icons.notifications))
@@ -92,17 +97,48 @@ class _HomePageState extends State<HomePage> {
         extendBodyBehindAppBar: false,
         body: _loading || _accountType == null
             ? const Center(child: CircularProgressIndicator.adaptive())
-            : SizedBox.expand(
-                child: _accountType == UserType.brand
-                    ? const BrandDashboard()
-                    : _accountType == UserType.influencer
-                        ? const InfluencerDashboard()
-                        : const AudienceHome(),
-              ),
-        bottomNavigationBar: Container(
-          width: width,
-          height: kBottomNavigationBarHeight,
-          color: colorScheme.background.withOpacity(0.1),
+            : _selectedIndex == 0
+                ? SizedBox.expand(
+                    child: _accountType == UserType.brand
+                        ? const BrandDashboard()
+                        : _accountType == UserType.influencer
+                            ? const InfluencerDashboard()
+                            : const AudienceHome(),
+                  )
+                : _selectedIndex == 1
+                    ? const InfluencersList()
+                    : const ProfileSettings(),
+        // we have set up our bottom navigation view.
+        // now we need to update the UI when the user taps on an option below
+        bottomNavigationBar: WaterDropNavBar(
+          barItems: <BarItem>[
+            /// dashboard
+            BarItem(
+              filledIcon: Icons.dashboard,
+              outlinedIcon: Icons.dashboard_outlined,
+            ),
+
+            /// influencers
+            BarItem(
+              filledIcon: Icons.record_voice_over,
+              outlinedIcon: Icons.record_voice_over_outlined,
+            ),
+
+            /// profile settings
+            BarItem(
+              filledIcon: Icons.supervisor_account,
+              outlinedIcon: Icons.supervisor_account_outlined,
+            ),
+          ],
+          selectedIndex: _selectedIndex,
+          onItemSelected: (index) {
+            // updating the current page index to match the selected on from the navigation bar
+
+            setState(() => _selectedIndex = index);
+          },
+          backgroundColor: colorScheme.background,
+          waterDropColor: colorScheme.primaryVariant,
+          bottomPadding: 16,
         ),
         extendBody: false,
       ),

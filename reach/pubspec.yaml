@@ -52,6 +52,7 @@ dependencies:
   shared_preferences:
   riverpod:
   flutter_riverpod:
+  water_drop_nav_bar:
 dev_dependencies:
   mockito:
   flutter_test:

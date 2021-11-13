@@ -203,53 +203,17 @@ class _BrandDashboardState extends State<BrandDashboard> {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            itemBuilder: (context, index) => Container(
-              width: 200,
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                color: colorScheme.surface,
-                borderRadius: BorderRadius.circular(16),
+            itemBuilder: (context, index) => InfluencerListTile(
+              influencer: UserAccount(
+                createdOn: 1,
+                email: 'q@mail.com',
+                id: '233',
+                lastLoginDate: 1,
+                username: 'Denver Bilson',
+                avatar: '',
+                userType: UserType.influencer,
               ),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: 8,
-                    left: 8,
-                    right: 8,
-                    child: Row(
-                      children: [
-                        Container(
-                          clipBehavior: Clip.hardEdge,
-                          width: 48,
-                          height: 48,
-                          margin: const EdgeInsets.only(right: 8),
-                          decoration: BoxDecoration(
-                            color: colorScheme.background,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                'Denver Bilson',
-                                style: textTheme.subtitle1,
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                '22K+ audiences',
-                                style: textTheme.caption,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              onTap: () => context.showSnackBar(''),
             ),
             separatorBuilder: (context, _) => const SizedBox(width: 8),
             itemCount: 5,
