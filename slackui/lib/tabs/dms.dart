@@ -9,19 +9,5 @@ class DMTab extends StatefulWidget {
 
 class _DMTabState extends State<DMTab> {
   @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    var colorScheme = theme.colorScheme;
-    var textTheme = theme.textTheme;
-
-    return Center(
-      child: Column(
-        children: [
-          const Icon(Icons.question_answer, size: 96,),
-          Text('DMs', style: textTheme.headline5,),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => _buildTemplateUI(context, Icons.question_answer, 'DMs');
 }
-

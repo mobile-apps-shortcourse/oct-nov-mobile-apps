@@ -106,3 +106,36 @@ void showSnackBar(BuildContext context, String message) =>
       ..showSnackBar(
         SnackBar(content: Text(message)),
       );
+
+Widget _buildTemplateUI(BuildContext context, IconData icon, String label) {
+  var size = MediaQuery.of(context).size;
+  var deviceWidth = size.width;
+  var deviceHeight = size.height;
+
+  var theme = Theme.of(context);
+  var colorScheme = theme.colorScheme;
+  var textTheme = theme.textTheme;
+
+  return SizedBox(
+    width: deviceWidth,
+    height: deviceHeight,
+    child: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 96,
+            color: colorScheme.primary,
+          ),
+          Text(
+            label,
+            style: textTheme.headline5?.copyWith(
+              color: colorScheme.primary,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}

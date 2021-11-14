@@ -9,18 +9,5 @@ class ProfileTab extends StatefulWidget {
 
 class _ProfileTabState extends State<ProfileTab> {
   @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    var colorScheme = theme.colorScheme;
-    var textTheme = theme.textTheme;
-
-    return Center(
-      child: Column(
-        children: [
-          const Icon(Icons.person, size: 96,),
-          Text('Profile', style: textTheme.headline5,),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => _buildTemplateUI(context, Icons.person, 'Profile');
 }

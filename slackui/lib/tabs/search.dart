@@ -9,18 +9,6 @@ class SearchTab extends StatefulWidget {
 
 class _SearchTabState extends State<SearchTab> {
   @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    var colorScheme = theme.colorScheme;
-    var textTheme = theme.textTheme;
-
-    return Center(
-      child: Column(
-        children: [
-          const Icon(Icons.search, size: 96,),
-          Text('Search', style: textTheme.headline5,),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      _buildTemplateUI(context, Icons.search, 'Search');
 }

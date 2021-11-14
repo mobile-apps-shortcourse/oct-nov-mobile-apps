@@ -9,24 +9,6 @@ class MentionsTab extends StatefulWidget {
 
 class _MentionsTabState extends State<MentionsTab> {
   @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    var colorScheme = theme.colorScheme;
-    var textTheme = theme.textTheme;
-
-    return Center(
-      child: Column(
-        children: [
-          const Icon(
-            Icons.alternate_email,
-            size: 96,
-          ),
-          Text(
-            'Mentions',
-            style: textTheme.headline5,
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      _buildTemplateUI(context, Icons.alternate_email, 'Mentions');
 }

@@ -12,6 +12,10 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    var deviceWidth = size.width;
+    var deviceHeight = size.height;
+
     var theme = Theme.of(context);
     var colorScheme = theme.colorScheme;
     var textTheme = theme.textTheme;
@@ -21,7 +25,7 @@ class _HomeTabState extends State<HomeTab> {
       child: Column(
         children: [
           // search bar
-          _buildSearchBar(colorScheme, textTheme),
+          _buildSearchBar(deviceWidth, colorScheme, textTheme),
 
           Divider(color: colorScheme.onBackground.withOpacity(0.2), height: 24),
 
@@ -202,11 +206,12 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   /// function that returns a widget of type container
-  Widget _buildSearchBar(ColorScheme colorScheme, TextTheme textTheme) =>
+  Widget _buildSearchBar(
+          double width, ColorScheme colorScheme, TextTheme textTheme) =>
       GestureDetector(
         onTap: () => showSnackBar(context, 'Search not implemented'),
         child: Container(
-          width: MediaQuery.of(context).size.width,
+          width: width,
           margin: const EdgeInsets.symmetric(horizontal: 24),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
